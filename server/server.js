@@ -21,7 +21,7 @@ app.use(cors());
 
 app.use(errorHandler);
 
-app.use('/api/register', require("./routes/userRoutes"));
+app.use('/api/user', require("./routes/userRoutes"));
 app.use('/api/doctors', require("./routes/doctorRoutes"));
 
 // ERROR handling middleware
@@ -55,7 +55,26 @@ app.get("/allusers",(req,res)=>{
         ]
     })
 })
+app.post('/profile', upload.single('avatar'), function (req, res, next) {
+    console.log(req.body);
+    console.log(req.file);
+    return res.redirect("/home");
+  });
+  app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        // Store the file in the 'uploads' directory
+        cb(null, path.join(__dirname, 'uploads'));
+    },
+    filename: function (req, file, cb) {
+        // Generate a unique file name with a timestamp and random number
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
 
+        // Append the file extension from the original file's name
+        const fileExtension = path.extname(file.originalname); // Extract file extension
+        cb(null, file.fieldname + '-' + uniqueSuffix + fileExtension); // Save with extension
+    }
+});
 hbs.registerPartials(path.join(__dirname, '/views/partials'));
 
 // APP CONFIG START

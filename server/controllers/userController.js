@@ -11,7 +11,7 @@ const registerUser = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error("Please fill all fields");
     }
-
+                       
     // Check if the user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -19,7 +19,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // Hash the password
-    const salt = await bcrypt.genSalt(10);
+     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create a new user
@@ -27,7 +27,7 @@ const registerUser = asyncHandler(async (req, res) => {
         firstName,
         lastName,
         age,
-        gender,
+        gender,        
         bloodGroup,
         email,
         phoneNumber,
@@ -38,3 +38,9 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 module.exports = { registerUser };
+
+
+
+
+
+
